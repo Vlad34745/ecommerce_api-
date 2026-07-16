@@ -9,8 +9,6 @@ from security import verify_api_key
 
 from sqlalchemy.exc import IntegrityError
 
-# Автоматично створює таблиці в базі, якщо їх ще нема (у нашому випадку вони вже є —
-# ця команда просто нічого не зробить, якщо таблиці вже існують)
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="E-Commerce API", version="0.1.0")

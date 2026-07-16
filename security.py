@@ -7,7 +7,6 @@ load_dotenv()
 
 REAL_API_KEY = os.getenv("API_KEY")
 
-# Каже FastAPI: очікуй заголовок з назвою "X-API-Key"
 api_key_header = APIKeyHeader(name="X-API-Key")
 
 def verify_api_key(key: str = Security(api_key_header)):

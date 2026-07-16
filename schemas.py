@@ -8,7 +8,7 @@ class ProductOut(BaseModel):
     price: float
 
     class Config:
-        from_attributes = True  # дозволяє Pydantic читати дані прямо з SQLAlchemy-об'єкта
+        from_attributes = True
         
 class ProductCreate(BaseModel):
     product_name: str
@@ -19,7 +19,7 @@ class OrderWithProduct(BaseModel):
     order_id: int
     order_date: datetime
     quantity: int
-    product: ProductOut   # ← вкладена схема! Одна схема всередині іншої
+    product: ProductOut
 
     class Config:
         from_attributes = True

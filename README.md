@@ -35,7 +35,7 @@ Built as a companion API layer for the [sql-ecommerce-pipeline](https://github.c
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/Vlad34745/ecommerce_api.git
+   git clone https://github.com/Vlad34745/ecommerce_api-.git
    cd ecommerce_api
    ```
 
