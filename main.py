@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -20,8 +20,15 @@ def read_root():
 
 
 @app.get("/products", response_model=List[schemas.ProductOut])
-def get_products(db: Session = Depends(get_db)):
-    products = db.query(models.Product).all()
+def get_products(
+    # skip/limit -> стандартна offset-пагінація: "пропусти перші N, поверни не більше M".
+    # Query(ge=0) і Query(le=500) не дають клієнту випадково (чи навмисно) запросити
+    # мільйон рядків за один раз і перевантажити базу.
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=500),
+    db: Session = Depends(get_db),
+):
+    products = db.query(models.Product).offset(skip).limit(limit).all()
     return products
 
 

@@ -3,7 +3,7 @@ from database import Base
 from sqlalchemy.orm import relationship
 
 class Product(Base):
-    __tablename__ = "products"  # точна назва таблиці в базі даних
+    __tablename__ = "products"  # must match the exact table name in the database
 
     product_id = Column(Integer, primary_key=True, index=True)
     product_name = Column(String, nullable=False)
@@ -28,4 +28,6 @@ class Order(Base):
     order_date = Column(DateTime, nullable=False)
     quantity = Column(Integer, nullable=False)
 
-    product = relationship("Product")   # ← нова строка
+    # lets an Order be queried together with its full Product details in one go
+    # (SQLAlchemy does the JOIN under the hood) instead of a separate lookup query
+    product = relationship("Product")

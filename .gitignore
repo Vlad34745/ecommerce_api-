@@ -12,3 +12,6 @@ __pycache__/
 
 .vscode/
 .idea/
+
+# SQLite test database created by the pytest suite (tests/conftest.py)
+test.db
