@@ -14,6 +14,19 @@ def test_create_product_without_api_key_is_rejected(client):
     payload = {"product_name": "Mouse", "category": "Electronics", "price": 19.99}
     response = client.post("/products", json=payload)
     assert response.status_code == 401
+    
+    
+def test_create_product_with_wrong_api_key_is_rejected(client):
+    # На відміну від тесту вище (заголовок взагалі відсутній — його перехоплює
+    # сам FastAPI ще до нашого коду), тут заголовок Є, але зі значенням, яке не
+    # співпадає з реальним ключем. Це той шлях, де реально виконується наш
+    # кастомний secrets.compare_digest() у security.py.
+    payload = {"product_name": "Mouse", "category": "Electronics", "price": 19.99}
+    response = client.post(
+        "/products", json=payload, headers={"X-API-Key": "totally-wrong-key"}
+    )
+    assert response.status_code == 401
+    assert response.json()["detail"] == "Invalid or missing API Key"
 
 
 def test_create_product_with_valid_api_key(client, auth_headers):
