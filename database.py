@@ -1,12 +1,22 @@
-from sqlalchemy import create_engine, event
-from sqlalchemy.orm import sessionmaker, declarative_base
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+from sqlalchemy import create_engine, event
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
-IS_SQLITE = bool(DATABASE_URL) and DATABASE_URL.startswith("sqlite")
+
+if not DATABASE_URL:  # pragma: no cover - exercised only when .env is missing/misconfigured
+    # Без цієї перевірки create_engine(None) впав би з незрозумілою помилкою
+    # SQLAlchemy десь у надрах бібліотеки. Так — одразу зрозуміло, що робити.
+    raise RuntimeError(
+        "DATABASE_URL is not set. Create a .env file based on .env.example "
+        "(see the 'How to Run Locally' section in README.md)."
+    )
+
+IS_SQLITE = DATABASE_URL.startswith("sqlite")
 
 # SQLite за замовчуванням дозволяє використовувати з'єднання лише в тому потоці,
 # де воно було створене. FastAPI/pytest можуть звертатися до сесії з іншого

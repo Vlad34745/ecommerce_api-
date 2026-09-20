@@ -11,7 +11,8 @@ def _create_user_product_and_order():
     рядки напряму через SQLAlchemy-сесію, як це робив би той пайплайн.
     """
     db = TestingSessionLocal()
-    user = models.User(name="Test User", email="test@example.com", registration_date=datetime.now(timezone.utc))
+    now = datetime.now(timezone.utc)
+    user = models.User(name="Test User", email="test@example.com", registration_date=now)
     product = models.Product(product_name="Test Product", category="Test", price=9.99)
     db.add_all([user, product])
     db.commit()
@@ -35,7 +36,7 @@ def _create_user_product_and_order():
 def test_get_user_orders_returns_nested_product(client):
     user_id, _ = _create_user_product_and_order()
 
-    response = client.get(f"/users/{user_id}/orders")
+    response = client.get(f"/api/v1/users/{user_id}/orders")
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 1
@@ -44,13 +45,13 @@ def test_get_user_orders_returns_nested_product(client):
 
 
 def test_get_orders_for_nonexistent_user_returns_404(client):
-    response = client.get("/users/999999/orders")
+    response = client.get("/api/v1/users/999999/orders")
     assert response.status_code == 404
 
 
 def test_delete_product_with_existing_order_is_blocked(client, auth_headers):
     _, product_id = _create_user_product_and_order()
 
-    response = client.delete(f"/products/{product_id}", headers=auth_headers)
+    response = client.delete(f"/api/v1/products/{product_id}", headers=auth_headers)
     assert response.status_code == 400
     assert "orders linked" in response.json()["detail"]

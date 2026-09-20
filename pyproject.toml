@@ -1,0 +1,15 @@
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+exclude = ["venv", ".venv", "__pycache__"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes (unused imports/variables, undefined names)
+    "I",   # isort (import order)
+    "B",   # flake8-bugbear (common bug patterns)
+]
+ignore = [
+    "B008",  # Depends(...) as a default argument is FastAPI's own recommended pattern
+]

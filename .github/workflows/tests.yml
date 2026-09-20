@@ -7,6 +7,22 @@ on:
     branches: [main]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Run ruff
+        run: ruff check .
+
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -24,17 +40,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
-      # --cov=. вимірює, які рядки коду реально виконались під час тестів
-      # (coverage = "покриття тестами"); --cov-report=xml створює machine-readable
-      # звіт, який далі читає Codecov, --cov-report=term-missing одразу друкує
-      # у логах CI, які саме рядки НЕ виконались жодним тестом.
       - name: Run tests with coverage
         run: pytest -v --cov=. --cov-report=xml --cov-report=term-missing
 
-      # Заливаємо звіт на codecov.io, щоб мати бейдж з % покриття в README
-      # і бачити по кожному Pull Request, які рядки новий код не покрив тестами.
-      # Завантажуємо лише з однієї версії Python з матриці (3.12), щоб не
-      # дублювати той самий звіт двічі за один запуск CI.
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.12'
         uses: codecov/codecov-action@v4

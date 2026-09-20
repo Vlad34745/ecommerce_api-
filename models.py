@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
-from database import Base
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+
+from database import Base
 
 class Product(Base):
     __tablename__ = "products"  # must match the exact table name in the database
