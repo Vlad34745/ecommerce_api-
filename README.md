@@ -4,8 +4,7 @@ A production-style REST API built with **FastAPI** and **SQLAlchemy**, connected
 
 ![Tests](https://github.com/Vlad34745/ecommerce_api-/actions/workflows/tests.yml/badge.svg)
 [![codecov](https://codecov.io/gh/Vlad34745/ecommerce_api-/branch/main/graph/badge.svg)](https://codecov.io/gh/Vlad34745/ecommerce_api-)
-
-Built as a companion API layer for the [sql-ecommerce-pipeline](https://github.com/Vlad34745/sql-ecommerce-pipeline) project, reusing the same underlying database schema (`users`, `products`, `orders`).
+[![License: MIT](https://img.shields.io/github/license/Vlad34745/ecommerce_api-)](LICENSE)
 
 ## 🛠 Tech Stack
 - **Framework:** FastAPI
